@@ -5,7 +5,7 @@ import math
 import pygame
 
 
-def rotate(tex_rect: pygame.Rect, link_pos: tuple, rotated_image: pygame.Surface, angle: int):
+def rotate(tex_rect: pygame.Rect, link_pos:list, rotated_image: pygame.Surface, angle: float):
     """
     1）先计算相对图片的中心的距离，和相对x,y,距离，计算夹角。
     2）将总相对水平的旋转角计算出来，计算出相对图片中心的距离。
@@ -21,7 +21,15 @@ def rotate(tex_rect: pygame.Rect, link_pos: tuple, rotated_image: pygame.Surface
     # 计算相对中心点的坐标
     abs_pos = [link_pos[0] - center_pos[0], link_pos[1] - center_pos[1]]
     # 计算相对过中心点的水平线的夹角
-    tan_val = math.atan(abs_pos[1] / -abs_pos[0])
+    if abs_pos[0] < 0 and -abs_pos[1] > 0:
+        tan_val = math.atan(-abs_pos[1] / abs_pos[0]) + math.pi
+    elif abs_pos[0] < 0 and -abs_pos[1] < 0:
+        tan_val = math.atan(-abs_pos[1] / abs_pos[0]) + math.pi
+    elif abs_pos[0] == 0:
+        tan_val = 0.5 * math.pi
+    else:
+        tan_val = math.atan(abs_pos[1] / -abs_pos[0])
+
     # 计算对应的弧度
     rad = math.radians(angle)
 
@@ -30,6 +38,8 @@ def rotate(tex_rect: pygame.Rect, link_pos: tuple, rotated_image: pygame.Surface
 
     # 计算旋转后的夹角
     rotate_angle = tan_val + rad
+
+    degree = math.degrees(rotate_angle)
     # 旋转图片
     rotate_rect = rotated_image.get_rect()
     # 对齐旋转后的中心点
@@ -40,7 +50,9 @@ def rotate(tex_rect: pygame.Rect, link_pos: tuple, rotated_image: pygame.Surface
     abs_y = math.sin(rotate_angle) * distance
     abs_pos = [rotate_rect.centerx + abs_x, rotate_rect.centery - abs_y]
 
-    return abs_pos
+    return_pos = (link_pos[0] + rotate_rect.x-abs_pos[0]  ,  link_pos[1] +rotate_rect.y-abs_pos[1] )
+
+    return return_pos
 
 
 def spilt_tex(tex, group):
@@ -110,6 +122,4 @@ def build_part_model(tex: pygame.Surface, file: str):
 
 
 if __name__ == '__main__':
-
-
     print(math.degrees(math.atan(0.75)))

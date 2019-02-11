@@ -266,7 +266,7 @@ class MyFrame1 ( wx.Frame ):
 
 class MyPanel1 ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 400,400 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 512,512 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer10 = wx.BoxSizer( wx.VERTICAL )
@@ -299,16 +299,31 @@ class MyFrame2 ( wx.Frame ):
 		self.m_checkList2 = wx.CheckListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_checkList2Choices, 0 )
 		bSizer8.Add( self.m_checkList2, 1, wx.ALL|wx.EXPAND, 5 )
 
+		self.m_staticline20 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		bSizer8.Add( self.m_staticline20, 0, wx.EXPAND |wx.ALL, 5 )
+
 		bSizer9 = wx.BoxSizer( wx.VERTICAL )
 
 		self.m_button6 = wx.Button( self, wx.ID_ANY, u"添加", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer9.Add( self.m_button6, 0, wx.ALL, 5 )
+		bSizer9.Add( self.m_button6, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_button7 = wx.Button( self, wx.ID_ANY, u"删除", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer9.Add( self.m_button7, 0, wx.ALL, 5 )
+		bSizer9.Add( self.m_button7, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline21 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer9.Add( self.m_staticline21, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText18 = wx.StaticText( self, wx.ID_ANY, u"工作的事件", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText18.Wrap( -1 )
+
+		bSizer9.Add( self.m_staticText18, 0, wx.ALL, 5 )
+
+		m_listBox2Choices = []
+		self.m_listBox2 = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listBox2Choices, 0 )
+		bSizer9.Add( self.m_listBox2, 1, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
 
 
-		bSizer8.Add( bSizer9, 0, 0, 5 )
+		bSizer8.Add( bSizer9, 0, wx.EXPAND, 5 )
 
 
 		self.SetSizer( bSizer8 )
@@ -316,8 +331,28 @@ class MyFrame2 ( wx.Frame ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.m_checkList2.Bind( wx.EVT_LISTBOX_DCLICK, self.edit_event )
+		self.m_checkList2.Bind( wx.EVT_CHECKLISTBOX, self.set_to_work )
+		self.m_button6.Bind( wx.EVT_BUTTON, self.add_behave )
+		self.m_button7.Bind( wx.EVT_BUTTON, self.del_behave )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, overide them in your derived class
+	def edit_event( self, event ):
+		event.Skip()
+
+	def set_to_work( self, event ):
+		event.Skip()
+
+	def add_behave( self, event ):
+		event.Skip()
+
+	def del_behave( self, event ):
+		event.Skip()
 
 
 ###########################################################################
@@ -487,6 +522,22 @@ class MyDialog_size ( wx.Dialog ):
 		self.m_comboBox_height.SetSelection( 0 )
 		bSizer11.Add( self.m_comboBox_height, 1, wx.ALL|wx.EXPAND, 5 )
 
+		self.m_staticline17 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer11.Add( self.m_staticline17, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText17 = wx.StaticText( self, wx.ID_ANY, u"帧率", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText17.Wrap( -1 )
+
+		bSizer11.Add( self.m_staticText17, 0, wx.ALL, 5 )
+
+		m_comboBox3Choices = [ u"30", u"60" ]
+		self.m_comboBox3 = wx.ComboBox( self, wx.ID_ANY, u"30", wx.DefaultPosition, wx.DefaultSize, m_comboBox3Choices, 0 )
+		self.m_comboBox3.SetSelection( 0 )
+		bSizer11.Add( self.m_comboBox3, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline18 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer11.Add( self.m_staticline18, 0, wx.EXPAND |wx.ALL, 5 )
+
 		self.m_staticText6 = wx.StaticText( self, wx.ID_ANY, u"背景颜色", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText6.Wrap( -1 )
 
@@ -495,6 +546,9 @@ class MyDialog_size ( wx.Dialog ):
 		self.m_colourPicker_bg = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.Colour( 0, 255, 0 ), wx.DefaultPosition, wx.DefaultSize, wx.CLRP_USE_TEXTCTRL )
 		bSizer11.Add( self.m_colourPicker_bg, 0, wx.ALL|wx.EXPAND, 5 )
 
+		self.m_staticline19 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer11.Add( self.m_staticline19, 0, wx.EXPAND |wx.ALL, 5 )
+
 		self.m_button_new_work = wx.Button( self, wx.ID_ANY, u"新建-工作区", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer11.Add( self.m_button_new_work, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
@@ -502,6 +556,146 @@ class MyDialog_size ( wx.Dialog ):
 		self.SetSizer( bSizer11 )
 		self.Layout()
 		bSizer11.Fit( self )
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_button_new_work.Bind( wx.EVT_BUTTON, self.creat_workshop )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, overide them in your derived class
+	def creat_workshop( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class MyDialog_event
+###########################################################################
+
+class MyDialog_event ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 317,577 ), style = wx.DEFAULT_DIALOG_STYLE )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		bSizer22 = wx.BoxSizer( wx.VERTICAL )
+
+		bSizer23 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText19 = wx.StaticText( self, wx.ID_ANY, u"进行活动的模块", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText19.Wrap( -1 )
+
+		bSizer23.Add( self.m_staticText19, 0, wx.ALL, 5 )
+
+		m_choice3Choices = []
+		self.m_choice3 = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice3Choices, 0 )
+		self.m_choice3.SetSelection( 0 )
+		bSizer23.Add( self.m_choice3, 0, wx.ALL, 5 )
+
+
+		bSizer22.Add( bSizer23, 1, wx.EXPAND, 5 )
+
+		bSizer24 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_checkBox1 = wx.CheckBox( self, wx.ID_ANY, u"持续不断（一直到其他动作结束）", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer24.Add( self.m_checkBox1, 0, wx.ALL, 5 )
+
+		self.m_checkBox2 = wx.CheckBox( self, wx.ID_ANY, u"到达后以相同的速度返回", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer24.Add( self.m_checkBox2, 0, wx.ALL, 5 )
+
+		self.m_checkBox4 = wx.CheckBox( self, wx.ID_ANY, u"后续的部件一同旋转", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer24.Add( self.m_checkBox4, 0, wx.ALL, 5 )
+
+		m_radioBox3Choices = [ u"绕中心点旋转", u"绕关节旋转" ]
+		self.m_radioBox3 = wx.RadioBox( self, wx.ID_ANY, u"旋转方式", wx.DefaultPosition, wx.DefaultSize, m_radioBox3Choices, 1, wx.RA_SPECIFY_COLS )
+		self.m_radioBox3.SetSelection( 0 )
+		bSizer24.Add( self.m_radioBox3, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		bSizer22.Add( bSizer24, 0, wx.EXPAND, 5 )
+
+		sbSizer1 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"旋转" ), wx.HORIZONTAL )
+
+		self.m_button11 = wx.Button( sbSizer1.GetStaticBox(), wx.ID_ANY, u"旋转角度", wx.DefaultPosition, wx.DefaultSize, 0 )
+		sbSizer1.Add( self.m_button11, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_spinCtrl2 = wx.SpinCtrl( sbSizer1.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10, 0 )
+		sbSizer1.Add( self.m_spinCtrl2, 0, wx.ALL, 5 )
+
+
+		bSizer22.Add( sbSizer1, 1, wx.EXPAND, 5 )
+
+		sbSizer2 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"持续时间" ), wx.HORIZONTAL )
+
+		self.m_spinCtrl3 = wx.SpinCtrl( sbSizer2.GetStaticBox(), wx.ID_ANY, u"0.1", wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10, 10 )
+		sbSizer2.Add( self.m_spinCtrl3, 0, wx.ALL, 5 )
+
+		self.m_spinCtrlDouble1 = wx.SpinCtrlDouble( sbSizer2.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 100, 0, 1 )
+		self.m_spinCtrlDouble1.SetDigits( 0 )
+		sbSizer2.Add( self.m_spinCtrlDouble1, 0, wx.ALL, 5 )
+
+
+		bSizer22.Add( sbSizer2, 1, wx.EXPAND, 5 )
+
+		sbSizer3 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"相对固定体的位移" ), wx.HORIZONTAL )
+
+		self.m_staticText20 = wx.StaticText( sbSizer3.GetStaticBox(), wx.ID_ANY, u"x:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText20.Wrap( -1 )
+
+		sbSizer3.Add( self.m_staticText20, 1, wx.ALL, 5 )
+
+		self.m_spinCtrl6 = wx.SpinCtrl( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 1000, 1 )
+		sbSizer3.Add( self.m_spinCtrl6, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline24 = wx.StaticLine( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		sbSizer3.Add( self.m_staticline24, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText21 = wx.StaticText( sbSizer3.GetStaticBox(), wx.ID_ANY, u"y:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText21.Wrap( -1 )
+
+		sbSizer3.Add( self.m_staticText21, 1, wx.ALL, 5 )
+
+		self.m_spinCtrl7 = wx.SpinCtrl( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 1000, 0 )
+		sbSizer3.Add( self.m_spinCtrl7, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		bSizer22.Add( sbSizer3, 1, wx.EXPAND, 5 )
+
+		sbSizer4 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"设置绘制顺序" ), wx.HORIZONTAL )
+
+		self.m_textCtrl3 = wx.TextCtrl( sbSizer4.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		sbSizer4.Add( self.m_textCtrl3, 0, wx.ALL, 5 )
+
+		self.m_spinBtn1 = wx.SpinButton( sbSizer4.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		sbSizer4.Add( self.m_spinBtn1, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline23 = wx.StaticLine( sbSizer4.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		sbSizer4.Add( self.m_staticline23, 0, wx.EXPAND |wx.ALL, 5 )
+
+		m_choice4Choices = []
+		self.m_choice4 = wx.Choice( sbSizer4.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice4Choices, 0 )
+		self.m_choice4.SetSelection( 0 )
+		sbSizer4.Add( self.m_choice4, 0, wx.ALL, 5 )
+
+
+		bSizer22.Add( sbSizer4, 1, wx.EXPAND, 5 )
+
+		m_sdbSizer2 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer2OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
+		self.m_sdbSizer2Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer2.AddButton( self.m_sdbSizer2Cancel )
+		m_sdbSizer2.Realize();
+
+		bSizer22.Add( m_sdbSizer2, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer22 )
+		self.Layout()
 
 		self.Centre( wx.BOTH )
 

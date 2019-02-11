@@ -2,6 +2,8 @@ import json
 import math
 import os
 import shutil
+import sys
+import time
 
 import pygame
 
@@ -223,8 +225,9 @@ class Model(object):
 
         end_type = {}
         for var in self.bilt_sort:
-            val: SubModel = self._info_dict[var]
-            end_type[var] = {'pos_x': val.bilt_rect.x, 'pos_y': val.bilt_rect.y, 'rotate_degree': val.rotate_angle}
+            per_mod: SubModel = self._info_dict[var]
+            end_type[var] = {'pos_x': per_mod.bilt_rect.x, 'pos_y': per_mod.bilt_rect.y,
+                             'rotate_degree': per_mod.rotate_angle}
 
         sub_mod_group = [(val.save(), val.get_value()) for val in self._info_dict.values()]
 
@@ -267,10 +270,12 @@ class SubModel(pygame.sprite.Sprite):
         self.name: str = name
         self.link_to: SubModel = None
         self._link_to_pos = [0, 0]
+        self.new_link = [0, 0]
         self.link_type = 0
         self._links = {'body': [None, (1, 1)]}
 
         self.rotate_angle = 0
+        self.rotated: pygame.Surface = None
 
     @property
     def link_to_pos(self):
@@ -278,8 +283,7 @@ class SubModel(pygame.sprite.Sprite):
 
     @link_to_pos.setter
     def link_to_pos(self, val):
-        self.bilt_rect.x = val[0]
-        self.bilt_rect.y = val[1]
+
         self._link_to_pos = val
 
     def load_from_dict(self, val: dict, model):
@@ -372,6 +376,11 @@ class SubModel(pygame.sprite.Sprite):
 
         self.rotate_angle += angle
 
+    def update_link_pos(self, x, y):
+        self.new_link[0] += round(x)
+        self.new_link[1] += round(y)
+        # 新的连接点，
+
     def move(self, x, y):
         """
         对自身进行不旋转的移动
@@ -379,7 +388,8 @@ class SubModel(pygame.sprite.Sprite):
         :param y:
         :return:
         """
-        self.link_to_pos = (x, y)
+        self.bilt_rect.x = x - self._link_to_pos[0]
+        self.bilt_rect.y = y - self.link_to_pos[1]
 
     def add_link_on(self, pos: list, model):
         """
@@ -398,10 +408,9 @@ class SubModel(pygame.sprite.Sprite):
         :param pos:旋转环绕点相对于自身初始态的相对坐标
         :return:
         """
-        self
         pass
 
-    def rotate(self, angle: int):
+    def rotate(self, angle: float):
         """
         绕连接关节旋转，先计算相对图片的中心的距离，和相对x,y,距离，计算夹角。
         将总相对水平的旋转角计算出来，计算出相对图片中心的距离。
@@ -409,24 +418,13 @@ class SubModel(pygame.sprite.Sprite):
         :param angle: 旋转角，->使用角度制
         :return: None
         """
-        abs_pos = [self.link_to_pos[0] - self.center_pos[0], self.link_to_pos[1] - self.center_pos[1]]
-        tan_val = math.atan(abs_pos[1] / abs_pos[0])
-        rad = math.radians(angle)
+        self.rotated = pygame.transform.rotate(self.pic, angle)
+        abs_pos = mod_load.rotate(self.rect, self.link_to_pos, self.rotated, angle)
+        self.bilt_rect.x = round(self.bilt_rect.x + abs_pos[0])
+        self.bilt_rect.y = round(self.bilt_rect.y + abs_pos[1])
 
-        distance = math.sqrt(abs_pos[0] ** 2 + abs_pos[1] ** 2)
-
-        rotate_angle = tan_val + rad
-        rotate_pic = pygame.transform.rotate(self.pic, angle)
-        rotate_rect = rotate_pic.get_rect()
-        rotate_rect.center = self.center_pos
-
-        abs_x = math.cos(rotate_angle) * distance
-        abs_y = math.sin(rotate_angle) * distance
-
-        abs_pos = [rotate_rect.centerx + abs_x, rotate_rect.centery + abs_y]
-
-        self.bilt_rect.x -= (abs_pos[0] - self.link_to_pos[0])
-        self.bilt_rect.y += (abs_pos[1] - self.link_to_pos[1])
+        self.new_link[0] = round(self._link_to_pos[0] + abs_pos[0])
+        self.new_link[1] = round(self._link_to_pos[1] + abs_pos[1])
 
     def link_rotate(self, angle):
         """
@@ -458,4 +456,40 @@ class SubModel(pygame.sprite.Sprite):
 
 
 if __name__ == '__main__':
-    print({var: f'SubModel/mod_{var}.json' for var in [1, 2, 3, 4, 5, 7]})
+    pic = pygame.image.load('..\\..\\text_dir\\eye_1_2.png')
+    a = SubModel('a', {'pic': pic})
+    a.link_to_pos = [10, 10]
+    a.move(100, 100)
+
+    degree = 0
+
+    pygame.init()
+
+    win = pygame.display.set_mode([500, 500])
+    work = False
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    work = not work
+                if event.key == pygame.K_q:
+                    sys.exit()
+        win.fill((255, 255, 255))
+        if work:
+            # abs_x, abs_y = mod_load.rotate(a.rect, a.link_to_pos, pygame.transform.rotate(a.pic, degree), degree)
+
+            # a.update_link_pos(abs_x, abs_y)
+            # print_x_x = (round(a.bilt_rect.x + abs_x), round(a.bilt_rect.y + abs_y))
+            a.rotate(degree)
+            r = win.blit(a.rotated, (a.bilt_rect.x, a.bilt_rect.y))
+            pygame.draw.rect(win, (0, 0, 0), r, 1)
+
+            # win.blit(a.pic, (a.bilt_rect.x, a.bilt_rect.y))
+            degree += 15
+            # time.sleep(0.125)
+
+            pygame.mouse.set_pos(100, 100)
+
+        pygame.display.flip()
