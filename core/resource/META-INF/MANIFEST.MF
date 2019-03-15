@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: %java_home%\lib;%java_home%\lib\tools.jar；
+Main-Class: com.jacky.spineanimationbuilder.desktop.DesktopLauncher
+

@@ -17,6 +17,7 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.6.53.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.alibaba:fastjson:1.2.55" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl_util:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />

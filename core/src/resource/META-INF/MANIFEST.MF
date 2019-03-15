@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Class-Path: gdx-1.9.9.jar lwjgl-platform-2.9.2-natives-linux.jar gdx-b
+ ox2d-1.9.9.jar gdx-backend-lwjgl-1.9.9.jar jinput-platform-2.0.5-nati
+ ves-windows.jar jlayer-1.0.1-gdx.jar jorbis-0.0.17.jar lwjgl-platform
+ -2.9.2-natives-windows.jar jinput-platform-2.0.5-natives-linux.jar sp
+ ine-libgdx-3.6.53.1.jar jinput-2.0.5.jar lwjgl-2.9.2.jar jinput-platf
+ orm-2.0.5-natives-osx.jar gdx-platform-1.9.9-natives-desktop.jar juti
+ ls-1.0.0.jar lwjgl-platform-2.9.2-natives-osx.jar lwjgl_util-2.9.2.ja
+ r gdx-box2d-platform-1.9.9-natives-desktop.jar
+Main-Class: com.jacky.spineanimationbuilder.desktop.DesktopLauncher
+

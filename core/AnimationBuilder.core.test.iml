@@ -13,6 +13,7 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.6.53.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.alibaba:fastjson:1.2.55" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="AnimationBuilder.core.main" />
 </module>
