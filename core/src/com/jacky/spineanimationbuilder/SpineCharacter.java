@@ -114,25 +114,29 @@ public class SpineCharacter {
     }
 
     public AnimationState.TrackEntry addAnimation(String animation,boolean loop,float delay,int index){
-        AnimationState.TrackEntry trackEntry=state.addAnimation(index,animation,loop,delay);
-        trackEntry.setMixDuration(trackEntry.getAnimationTime());
-        action.add(trackEntry);
-        this.index+=1;
+        AnimationState.TrackEntry trackEntry=state.addAnimation(this.index,animation,loop,delay);
+        trackEntry.setMixDuration(trackEntry.getAnimationEnd()-trackEntry.getAnimationStart());
+        time+=trackEntry.getAnimationTime();
+        //action.add(trackEntry);
+        this.index=trackEntry.getTrackIndex();
+        this.action.add(trackEntry);
         return trackEntry;
     }
     public AnimationState.TrackEntry addAnimation(Animation animation,boolean loop,float delay){
         AnimationState.TrackEntry trackEntry=state.addAnimation(index,animation,loop,delay);
-        trackEntry.setMixDuration(trackEntry.getAnimationTime());
+        trackEntry.setMixDuration(trackEntry.getAnimationEnd()-trackEntry.getAnimationStart());
         //action.add(trackEntry);
         this.index+=1;
+        this.action.add(trackEntry);
         return trackEntry;
     }
     public AnimationState.TrackEntry addAnimation(int index,boolean loop,float delay){
         AnimationState.TrackEntry trackEntry=state.addAnimation(this.index,animations.get(index),loop,delay);
-        trackEntry.setMixDuration(trackEntry.getAnimationTime());
+        trackEntry.setMixDuration(trackEntry.getAnimationEnd()-trackEntry.getAnimationStart());
         time+=trackEntry.getAnimationTime();
         //action.add(trackEntry);
         this.index=trackEntry.getTrackIndex();
+        this.action.add(trackEntry);
         return trackEntry;
     }
     public FileHandle findAtlasFile(final FileHandle skeletonFile) {
@@ -166,5 +170,12 @@ public class SpineCharacter {
 
     public float getTime() {
         return time;
+    }
+
+    public Array<AnimationState.TrackEntry> getAction() {
+        return action;
+    }
+    public  void clearAction(){
+        action.clear();
     }
 }

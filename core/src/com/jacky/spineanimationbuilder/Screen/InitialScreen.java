@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.jacky.spineanimationbuilder.AnimationBuilder;
 
 import javax.swing.*;
@@ -19,6 +20,8 @@ public class InitialScreen implements Screen {
     int index = 0;
     private String filename;
     private boolean isOpen = false;
+  //  private Texture bg;
+    private int[] pos=new int[]{0,0};
 
     public InitialScreen(AnimationBuilder game) {
         this.game = game;
@@ -28,6 +31,7 @@ public class InitialScreen implements Screen {
     public void show() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 1024);
+//        bg=new Texture(Gdx.files.internal("start_bg.png"));
     }
 
     @Override
@@ -55,7 +59,7 @@ public class InitialScreen implements Screen {
 
                 @Override
                 public String getDescription() {
-                    return "*.atlas;*.atlas.txt";
+                    return "*.skel;*.skel.txt";
                 }
             });
 
@@ -75,7 +79,9 @@ public class InitialScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        camera.setToOrtho(false,width,height);
+  //      pos[0]= width /2-bg.getWidth()/2;
+    //    pos[1]=height /2-bg.getHeight()/2;
     }
 
     @Override

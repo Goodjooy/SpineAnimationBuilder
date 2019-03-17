@@ -40,6 +40,8 @@ public class ShowScreen implements Screen {
     private Array<Pixmap> files = new Array<Pixmap>();
     private String filename;
 
+    private boolean startScreenShort = false;
+
 
     public ShowScreen(AnimationBuilder game, float[] bgColor, float scale, int[] size) {
         this.game = game;
@@ -62,8 +64,10 @@ public class ShowScreen implements Screen {
             delta = 0f;
             firstStart = false;
         }
-
+        if (startScreenShort)
         Gdx.gl.glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
+        else
+            Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -73,23 +77,49 @@ public class ShowScreen implements Screen {
         if (loader != null) {
             Bone bone = loader.skeleton.findBone("leg_L");
 
-
-            loader.state.update(delta);
-            loader.state.apply(loader.skeleton);
-
-
+            if (startScreenShort) {
+                loader.state.update(delta);
+                loader.state.apply(loader.skeleton);
+            }
             loader.skeleton.updateWorldTransform();
 
             game.batch.begin();
             renderer.draw(game.batch, loader.skeleton);
             game.batch.end();
-
-            screenShort();
+            if (startScreenShort)
+                screenShort();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
             saveAll();
+        // camera.translate(90*delta,90*delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            camera.translate(0, -150 * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            camera.translate(0, 150 * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            camera.translate(150 * delta, 0);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            camera.translate(-150 * delta, 0);
 
+        if (Gdx.input.isKeyPressed(Input.Keys.Q))
+            camera.rotate(90 * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.E))
+            camera.rotate(-90 * delta);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.G))
+            startScreenShort = true;
+        if (Gdx.input.isKeyPressed(Input.Keys.H))
+            startScreenShort = false;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.R))
+            camera.setToOrtho(false);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+            addAnimation();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)&&Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))
+            System.exit('e');
     }
 
     @Override
@@ -158,8 +188,15 @@ public class ShowScreen implements Screen {
             }
             System.out.println("done!,all finish");
             files.clear();
-            System.exit(2);
+
         }
+
+        System.out.println("\n还要添加动画吗（y/n）");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.next().equals("y")) {
+            firstStart = true;
+            addAnimation();
+        } else System.exit('t');
 
 
     }
@@ -179,28 +216,15 @@ public class ShowScreen implements Screen {
 
         loader.skeleton.setPosition(Gdx.graphics.getBackBufferWidth() / 2f, Gdx.graphics.getBackBufferHeight() / 4f);
 
-        int num = 1;
-        for (String animationName :
-                loader.getAnimations()) {
-            System.out.println(num + "). :--" + animationName);
-            num += 1;
-        }
-        System.out.print("\n\t请选择动画：\t");
 
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextInt()) {
-            loader.addAnimation(scanner.nextInt() - 1, true, 2);
-
-        } else {
-            loader.addAnimation(scanner.next(), true, 2, 0);
-        }
+        addAnimation();
 
         // System.out.println(loader.skeleton.getSlots());
         // System.out.println(loader.getAnimations());
 
-        Bone bone_2 = loader.skeleton.findBone("hand_L2");
-        bone_2.getData().setRotation(90);
-        loader.skeleton.updateWorldTransform();
+        // Bone bone_2 = loader.skeleton.findBone("hand_L2");
+        // bone_2.getData().setRotation(90);
+        // loader.skeleton.updateWorldTransform();
 
         firstStart = true;
     }
@@ -235,8 +259,49 @@ public class ShowScreen implements Screen {
         }
         return null;
     }
-}
 
+    private void addAnimation() {
+        startScreenShort=false;
+        loader.state.clearTracks();
+        loader.clearAction();
+        int num = 1;
+        for (String animationName :
+                loader.getAnimations()) {
+            System.out.println(num + "). :--" + animationName);
+            num += 1;
+        }
+        System.out.print("\n\t请选择动画：\t");
+        boolean isAdd = true;
+        while (isAdd) {
+
+
+            Scanner scanner = new Scanner(System.in);
+            if (scanner.hasNextInt()) {
+                loader.addAnimation(scanner.nextInt() - 1, true, 2);
+
+            } else {
+                loader.addAnimation(scanner.next(), true, 2, 0);
+            }
+            System.out.print("当前动画\n\n\t");
+            Array<AnimationState.TrackEntry> trackEntries = loader.getAction();
+            for (AnimationState.TrackEntry entry : trackEntries) {
+                System.out.print(entry + "->");
+            }
+            System.out.println("END");
+            System.out.println("还要添加动画吗（y/n）");
+            isAdd = scanner.next().equals("y");
+        }
+
+        Array<AnimationState.TrackEntry> trackEntries = loader.getAction();
+        for (AnimationState.TrackEntry entry : trackEntries) {
+            System.out.print(entry + "->");
+        }
+        System.out.println("END\n");
+
+        System.out.println("Animation is real to go");
+        firstStart=true;
+    }
+}
 
 
 
