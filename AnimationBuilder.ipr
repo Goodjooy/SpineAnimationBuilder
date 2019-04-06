@@ -185,6 +185,9 @@
       </item>
     </group>
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="jacky" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnimationBuilder.iml" filepath="$PROJECT_DIR$/AnimationBuilder.iml" />
@@ -259,13 +262,13 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/f1c4ffebc5e4f68be914404faab580c20de8ea1f/jlayer-1.0.1-gdx-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.6.53.1">
+    <library name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.7.0.1">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.6.53.1/281f862762c15a8f8a79443a57526f4238b52b8e/spine-libgdx-3.6.53.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.7.0.1/7279457be8c63fade7b0cb04e84229b796d7d336/spine-libgdx-3.7.0.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.6.53.1/dbf08c71a413f82d9430da9515ae57b7f67357b6/spine-libgdx-3.6.53.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.7.0.1/a3e9623512402cd1be88dcf2b15c9682a865ac69/spine-libgdx-3.7.0.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: net.java.jinput:jinput-platform:natives-linux:2.0.5">
