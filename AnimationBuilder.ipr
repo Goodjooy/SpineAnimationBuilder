@@ -40,7 +40,6 @@
       <module name="AnimationBuilder.desktop.test" target="1.6" />
     </bytecodeTargetLevel>
   </component>
-  <component name="Encoding" addBOMForNewFiles="with NO BOM" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -262,13 +261,13 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/f1c4ffebc5e4f68be914404faab580c20de8ea1f/jlayer-1.0.1-gdx-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.7.0.1">
+    <library name="Gradle: com.esotericsoftware.spine:spine-libgdx:3.6.34.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.7.0.1/7279457be8c63fade7b0cb04e84229b796d7d336/spine-libgdx-3.7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.6.34.0/928f01e097b3342a6a613c2482e2cf8037a7425f/spine-libgdx-3.6.34.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.7.0.1/a3e9623512402cd1be88dcf2b15c9682a865ac69/spine-libgdx-3.7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.spine/spine-libgdx/3.6.34.0/ca56a373bccb9cf3021451d8b454bb21b155b046/spine-libgdx-3.6.34.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: net.java.jinput:jinput-platform:natives-linux:2.0.5">

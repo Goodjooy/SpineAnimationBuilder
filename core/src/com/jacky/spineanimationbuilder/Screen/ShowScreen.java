@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.utils.*;
 import com.esotericsoftware.spine.*;
+import com.esotericsoftware.spine.attachments.Attachment;
 import com.jacky.spineanimationbuilder.AnimationBuilder;
+import com.jacky.spineanimationbuilder.AnimationWork.SubAnimations.SubAnimation;
 import com.jacky.spineanimationbuilder.SpineCharacter;
 import com.sun.istack.internal.NotNull;
 
@@ -29,8 +26,12 @@ public class ShowScreen implements Screen {
     private boolean firstStart = false;
     //private final SpineCharacter loader2;
 
-    public String animation = "normal";
+    private int dd=1;
+    private float angle=0;
+    private float angleSpeed=-1.5f;
+    private com.jacky.spineanimationbuilder.AnimationWork.Animation animation;
 
+    private long millis=0;
 
     OrthographicCamera camera;
 
@@ -56,6 +57,7 @@ public class ShowScreen implements Screen {
 
     @Override
     public void show() {
+        millis= TimeUtils.millis();
     }
 
     @Override
@@ -65,9 +67,9 @@ public class ShowScreen implements Screen {
             firstStart = false;
         }
         if (startScreenShort)
-        Gdx.gl.glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
+            Gdx.gl.glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
         else
-            Gdx.gl.glClearColor(0,0,0,0);
+            Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -75,20 +77,44 @@ public class ShowScreen implements Screen {
 
 
         if (loader != null) {
-            Bone bone = loader.skeleton.findBone("leg_L");
+            Bone bone = loader.skeleton.findBone("face");
 
             if (startScreenShort) {
+
+
                 loader.state.update(delta);
                 loader.state.apply(loader.skeleton);
+                loader.skeleton.updateWorldTransform();
+
+                animation.update(delta);
+
+            //   bone.setToSetupPose();
+            //   angle += angleSpeed * delta;
+            //   bone.setRotation(angle);
+               loader.skeleton.updateWorldTransform();
+//
+//
+            //   long time = TimeUtils.millis() - millis;
+//
+            //   if (time > 2000 && time <= 4000)
+            //       angleSpeed = 1.5f;
+            //   else if (time > 4000&&time<=6000)
+            //       angleSpeed = -1.5f;
+            //   else if(time>6000){
+            //       angleSpeed = 1.5f;
+            //       millis=TimeUtils.millis();
+               //}
+
+              // System.out.println(angleSpeed);
             }
-            loader.skeleton.updateWorldTransform();
 
             game.batch.begin();
             renderer.draw(game.batch, loader.skeleton);
             game.batch.end();
-            if (startScreenShort)
-                screenShort();
+           if (startScreenShort)
+               screenShort();
         }
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
             saveAll();
@@ -107,8 +133,10 @@ public class ShowScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.E))
             camera.rotate(-90 * delta);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.G))
+        if (Gdx.input.isKeyPressed(Input.Keys.G)) {
+            millis = TimeUtils.millis();
             startScreenShort = true;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.H))
             startScreenShort = false;
 
@@ -118,7 +146,8 @@ public class ShowScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             addAnimation();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)&&Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F1) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))
             System.exit('e');
     }
 
@@ -218,6 +247,7 @@ public class ShowScreen implements Screen {
 
 
         addAnimation();
+        appendAnimation();
 
         // System.out.println(loader.skeleton.getSlots());
         // System.out.println(loader.getAnimations());
@@ -225,6 +255,8 @@ public class ShowScreen implements Screen {
         // Bone bone_2 = loader.skeleton.findBone("hand_L2");
         // bone_2.getData().setRotation(90);
         // loader.skeleton.updateWorldTransform();
+        System.out.println(loader.skeleton.getBones());
+       // bigTexture(2.5f);
 
         firstStart = true;
     }
@@ -277,10 +309,10 @@ public class ShowScreen implements Screen {
 
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
-                loader.addAnimation(scanner.nextInt() - 1, true, 2);
+                loader.addAnimation(scanner.nextInt() - 1, true, 0);
 
             } else {
-                loader.addAnimation(scanner.next(), true, 2, 0);
+                loader.addAnimation(scanner.next(), true, 0, 0);
             }
             System.out.print("当前动画\n\n\t");
             Array<AnimationState.TrackEntry> trackEntries = loader.getAction();
@@ -298,9 +330,68 @@ public class ShowScreen implements Screen {
         }
         System.out.println("END\n");
 
-        System.out.println("Animation is real to go");
+        System.out.println("Animation is real!");
         firstStart=true;
     }
+
+   private void appendAnimation() {
+       animation = new com.jacky.spineanimationbuilder.AnimationWork.Animation();
+
+       SubAnimation subAnimation = new SubAnimation();
+       subAnimation.setBone(loader.skeleton.findBone("root"));
+       subAnimation.setAutoBack(true);
+       subAnimation.setDelay(0);
+       subAnimation.setBaseOnAnimation(true);
+       subAnimation.setLoop(false);
+       subAnimation.setRotate(25);
+       subAnimation.setScaleY(2.5f);
+       subAnimation.setScaleX(2.5f);
+       subAnimation.setTime(5);
+       subAnimation.realToSetUp();
+
+       SubAnimation subAnimation1=new SubAnimation();
+       subAnimation1.setBone(loader.skeleton.findBone("root"));
+       subAnimation1.setAutoBack(true);
+       subAnimation1.setDelay(subAnimation.getKeepTime());
+       subAnimation.setBaseOnAnimation(true);
+       subAnimation1.setLoop(false);
+       subAnimation1.setRotate(-25);
+       subAnimation1.setScaleY(2.5f);
+       subAnimation1.setScaleX(2.5f);
+       subAnimation1.setTime(5);
+       subAnimation1.realToSetUp();
+
+
+       animation.addSubAnimation(subAnimation);
+       animation.addSubAnimation(subAnimation1);
+       animation.realToGo();
+
+   }
+  private void rand(){
+      Array<Slot> slotArray=loader.skeleton.getDrawOrder();
+      for (Slot slot : slotArray) {
+          Attachment attachment=slot.getAttachment();
+
+         // TextureAtlas.AtlasRegion region=loader.skeleton;
+          FloatArray val = slot.getAttachmentVertices();
+          float[]vertices=new float[val.size];
+          for (int i = 0; i < vertices.length; i++) {
+              vertices[i]=val.get(i);
+          }
+          slot.getAttachmentVertices();
+          short[]triangles=new short[10];
+          //triangles
+          Pixmap pixmap=new Pixmap(10,10, Pixmap.Format.RGBA8888);
+          pixmap.setColor(1,1,1,0);
+          pixmap.fill();
+
+          Texture texture =new Texture(pixmap);
+
+
+          texture.getTextureData().consumePixmap();
+          game.batch.draw(texture, vertices,0,vertices.length,triangles,0,triangles.length);
+      }
+  }
 }
 
 

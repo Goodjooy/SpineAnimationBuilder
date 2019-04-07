@@ -38,7 +38,7 @@ public class AnimationBuilder extends Game {
         initialScreen = new InitialScreen(this);
         showScreen = new ShowScreen(this, bgColor, scale, size);
         loadScreen=new LoadScreen(arg);
-        if (arg.length==3 &&arg[0].equals("-load")){
+        if ((arg.length==3||arg.length==4) &&arg[0].equals("-load")){
             this.setScreen(loadScreen);
         }
         else {

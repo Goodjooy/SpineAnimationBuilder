@@ -1,5 +1,6 @@
 package com.jacky.spineanimationbuilder;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,7 +11,7 @@ import com.esotericsoftware.spine.*;
 
 public class SpineCharacter {
 
-    private final float scale;
+    private  float scale=1.0f;
     public Skeleton skeleton;
     public SkeletonData skeletonData;
 
@@ -24,24 +25,27 @@ public class SpineCharacter {
     private Array<String> skins = new Array<String>();
     private Array<AnimationState.TrackEntry> action=new Array<AnimationState.TrackEntry>();
 
-    private final TextureAtlas.AtlasRegion fake;
-
     private int index=0;
 
     private float time=0;
 
-    public SpineCharacter(float scale) {
+    public SpineCharacter(float scale){
+        this.scale=scale;
+    }
+    public SpineCharacter(){}
+
+    public void loadSkeleton(final String skeletonFile,final String atlasFile){
+        FileHandle skeleton =Gdx.files.absolute(skeletonFile);
+        System.out.println(skeleton.exists());
+        loadSkeleton(skeleton,Gdx.files.absolute(atlasFile));
+    }
+
+    public void loadSkeleton(final FileHandle skeletonFile,final FileHandle atlasFile) {
         Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(new Color(1f, 1f, 1f, 1f));
         pixmap.fill();
-        fake = new TextureAtlas.AtlasRegion(new Texture(pixmap), 0, 0, 32, 32);
+        final TextureAtlas.AtlasRegion fake = new TextureAtlas.AtlasRegion(new Texture(pixmap), 0, 0, 32, 32);
         pixmap.dispose();
-
-        this.scale=scale;
-    }
-
-
-    public void loadSkeleton(final FileHandle skeletonFile,final FileHandle atlasFile) {
         if (skeletonFile != null) {
             String skeletonFileName = skeletonFile.name();
             if ((skeletonFileName.endsWith(".skel.txt") || skeletonFileName.endsWith(".skel")) && skeletonFile.exists()) {
